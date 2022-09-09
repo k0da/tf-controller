@@ -359,6 +359,38 @@ func (r *TerraformRunnerServer) Init(ctx context.Context, req *InitRequest) (*In
 	return &InitReply{Message: "ok"}, nil
 }
 
+func (r *TerraformRunnerServer) SelectWorkspace(ctx context.Context, req *WorkspaceRequest) (*WorkspaceReply, error) {
+	log := ctrl.LoggerFrom(ctx).WithName(loggerName)
+	log.Info("workspace select")
+	if req.TfInstance != "1" {
+		err := fmt.Errorf("no TF instance found")
+		log.Error(err, "no terraform")
+		return nil, err
+	}
+
+	var terraform infrav1.Terraform
+	err := terraform.FromBytes(req.Terraform, r.Scheme)
+	if err != nil {
+		log.Error(err, "there was a problem getting the terraform resource")
+		return nil, err
+	}
+	// cache the Terraform resource when initializing
+	r.terraform = &terraform
+	wsOpts := []tfexec.WorkspaceNewCmdOption{}
+	ws := terraform.Spec.Workspace
+	if ws != "" {
+		if err := r.tf.WorkspaceNew(ctx, ws, wsOpts...); err != nil {
+			log.Info("workspace new err, %s", err.Error())
+		}
+		if err := r.tf.WorkspaceSelect(ctx, ws); err != nil {
+			err := fmt.Errorf("failed to select workspace %s", ws)
+			log.Error(err, "workspace select error")
+			return nil, err
+		}
+	}
+	return &WorkspaceReply{Message: "ok"}, nil
+}
+
 // GenerateVarsForTF renders the Terraform variables as a json file for the given inputs
 // variables supplied in the varsFrom field will override those specified in the spec
 func (r *TerraformRunnerServer) GenerateVarsForTF(ctx context.Context, req *GenerateVarsForTFRequest) (*GenerateVarsForTFReply, error) {

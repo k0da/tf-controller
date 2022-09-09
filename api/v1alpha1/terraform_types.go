@@ -85,6 +85,9 @@ type TerraformSpec struct {
 	// +optional
 	BackendConfigsFrom []BackendConfigsReference `json:"backendConfigsFrom,omitempty"`
 
+	// +optional
+	Workspace string `json:"workspace,omitempty"`
+
 	// List of input variables to set for the Terraform program.
 	// +optional
 	Vars []Variable `json:"vars,omitempty"`
