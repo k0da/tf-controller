@@ -69,6 +69,8 @@ func newRootCommand() *cobra.Command {
 
 	rootCmd.AddCommand(buildLogsCmd())
 
+	rootCmd.AddCommand(buildDumpTerraformCmd(app))
+
 	return rootCmd
 }
 
@@ -403,6 +405,28 @@ func buildBreakTheGlassCmd(app *tfctl.CLI) *cobra.Command {
 	}
 	return breakTheGlass
 }
+
+func buildDumpTerraformCmd(app *tfctl.CLI) *cobra.Command {
+	dumpTerraform := &cobra.Command{
+		Use:     "dump NAME",
+		Short:   "dump terraform configuration into local runnable artifact",
+		Example: strings.Trim(dumpExamples, "\n"),
+		Args:    cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return app.DumpTerraform(os.Stdout, args[0], viper.GetString("directory"))
+		},
+	}
+	dumpTerraform.Flags().StringP("directory", "d", "", "output directory")
+	viper.BindPFlags(dumpTerraform.Flags())
+	return dumpTerraform
+}
+
+var dumpExamples = `
+  # kubectl port-forward -n <source-controller namespace> service/source-controller 8080:80
+  # export SOURCE_CONTROLLER_LOCALHOST=localhost:8080
+  # Dump Terraform resources into given directory
+  tfctl dump my-resource -d ./foo
+`
 
 func configureDefaultNamespace() {
 	*kubeconfigArgs.Namespace = defaultNamespace

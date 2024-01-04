@@ -20,7 +20,7 @@ require (
 	github.com/fluxcd/pkg/runtime v0.43.2
 	github.com/fluxcd/pkg/untar v0.3.0
 	github.com/fluxcd/source-controller/api v1.1.1
-	github.com/go-logr/logr v1.3.0
+	github.com/go-logr/logr v1.4.1
 	github.com/google/uuid v1.4.0
 	github.com/hashicorp/go-cleanhttp v0.5.2
 	github.com/hashicorp/go-retryablehttp v0.7.5
@@ -37,6 +37,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.8.4
+	github.com/tonglil/buflogr v1.1.1
 	github.com/weaveworks/tf-controller/api v0.0.0-00010101000000-000000000000
 	github.com/weaveworks/tf-controller/tfctl v0.0.0-00010101000000-000000000000
 	github.com/zclconf/go-cty v1.14.1
@@ -127,7 +128,7 @@ require (
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect

@@ -15,6 +15,7 @@ import (
 	"k8s.io/client-go/rest"
 
 	"github.com/fluxcd/cli-utils/pkg/kstatus/polling"
+	sourcev1 "github.com/fluxcd/source-controller/api/v1"
 	infrav1 "github.com/weaveworks/tf-controller/api/v1alpha2"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -51,6 +52,7 @@ func (c *CLI) Init(kubeconfigArgs *genericclioptions.ConfigFlags, config *viper.
 	cobra.CheckErr(corev1.AddToScheme(scheme))
 	cobra.CheckErr(appsv1.AddToScheme(scheme))
 	cobra.CheckErr(infrav1.AddToScheme(scheme))
+	cobra.CheckErr(sourcev1.AddToScheme(scheme))
 
 	client, err := client.NewWithWatch(k8sConfig, client.Options{
 		Scheme: scheme,
